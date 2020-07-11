@@ -1,9 +1,7 @@
 <script>
-  import ConduitPagesHomeService from "./conduit-home-page-service.js";
+  import ConduitPagesHomeService from "./conduit-pages-home-service.js";
   import ConduitTagsPopular from "./conduit-tags-popular.svelte";
   import ConduitArticlesFeeds from "./conduit-articles-feeds.svelte";
-  import ConduitArticlesList from "./conduit-articles-list.svelte";
-  import ConduitArticlesListItem from "./conduit-articles-list-item.svelte";
   import ConduitArticlesPreview from "./conduit-articles-preview.svelte";
   import ConduitArticlesMeta from "./conduit-articles-meta.svelte";
   import ConduitButtonsFavorite from "./conduit-buttons-favorite.svelte";
@@ -67,23 +65,15 @@
           bind:onSelect={onFeedSelected}
           bind:selected={selectedFeed} />
         {#if articles}
-          <ConduitArticlesList bind:articles>
-            {#each articles as article}
-              <ConduitArticlesListItem bind:article>
-                <ConduitArticlesPreview bind:article>
-                  <ConduitArticlesMeta bind:article>
-                    <ConduitButtonsFavorite
-                      bind:article
-                      bind:onFavorite={onFavoritedArticle} />
-
-                  </ConduitArticlesMeta>
-
-                </ConduitArticlesPreview>
-
-              </ConduitArticlesListItem>
-            {/each}
-
-          </ConduitArticlesList>
+          {#each articles as article}
+            <ConduitArticlesPreview bind:article>
+              <ConduitArticlesMeta bind:article>
+                <ConduitButtonsFavorite
+                  bind:article
+                  bind:onFavorite={onFavoritedArticle} />
+              </ConduitArticlesMeta>
+            </ConduitArticlesPreview>
+          {/each}
         {/if}
       </div>
       <div class="col-md-3">
