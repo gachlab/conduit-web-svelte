@@ -1,4 +1,4 @@
-export default {
+const ConduitHomePageService = {
   fetchTags() {
     return fetch("https://conduit.productionready.io/api/tags")
       .then((response) => response.json())
@@ -18,3 +18,5 @@ export default {
       .then((response) => response.articles);
   },
 };
+
+export default ConduitHomePageService;
