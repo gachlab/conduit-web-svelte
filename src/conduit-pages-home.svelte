@@ -1,5 +1,5 @@
 <script>
-  import ConduitHomePageService from "./conduit-home-page-service.js";
+  import ConduitPagesHomeService from "./conduit-home-page-service.js";
   import ConduitTagsPopular from "./conduit-tags-popular.svelte";
   import ConduitArticlesFeeds from "./conduit-articles-feeds.svelte";
   import ConduitArticlesList from "./conduit-articles-list.svelte";
@@ -24,7 +24,7 @@
     };
     feeds[2] = tagFeed;
     selectedFeed = tagFeed.id;
-    ConduitHomePageService.fetchArticles({
+    ConduitPagesHomeService.fetchArticles({
       limit: 10,
       offset: 0,
       feed: tagFeed
@@ -33,7 +33,7 @@
 
   let onFeedSelected = onselectedFeed => {
     selectedFeed = onselectedFeed.id;
-    ConduitHomePageService.fetchArticles({
+    ConduitPagesHomeService.fetchArticles({
       limit: 10,
       offset: 0,
       feed: onselectedFeed
@@ -44,8 +44,8 @@
     console.log(article);
   };
 
-  ConduitHomePageService.fetchTags().then(dataTags => (tags = dataTags));
-  ConduitHomePageService.fetchArticles({
+  ConduitPagesHomeService.fetchTags().then(dataTags => (tags = dataTags));
+  ConduitPagesHomeService.fetchArticles({
     limit: 10,
     offset: 0,
     feed: { id: "all", name: "Global Feed" }

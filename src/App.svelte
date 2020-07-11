@@ -1,11 +1,11 @@
 <script>
   import ConduitLayoutHeader from "./conduit-layout-header.svelte";
   import ConduitLayoutFooter from "./conduit-layout-footer.svelte";
-  import ConduitHomePage from "./conduit-home-page.svelte";
+  import ConduitPagesHome from "./conduit-pages-home.svelte";
 </script>
 
 <main>
   <ConduitLayoutHeader />
-  <ConduitHomePage />
+  <ConduitPagesHome />
   <ConduitLayoutFooter />
 </main>
