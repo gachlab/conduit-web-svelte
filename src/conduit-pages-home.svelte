@@ -8,46 +8,43 @@
 
   let tags = undefined;
   let articles = undefined;
+  let feeds = undefined;
+  let selectedFeed = undefined;
+  let pages = undefined;
+  let selectedPage = undefined;
 
-  let feeds = [
-    { id: "personal", name: "Your feed" },
-    { id: "all", name: "Global Feed" }
-  ];
-  let selectedFeed = "all";
+  const onTagSelected = tag =>
+    ConduitPagesHomeService.onTagSelected({ tag, state: getState() });
 
-  let onTagSelected = tag => {
-    const tagFeed = {
-      id: tag.toLowerCase(),
-      name: "#" + tag
-    };
-    feeds[2] = tagFeed;
-    selectedFeed = tagFeed.id;
-    ConduitPagesHomeService.fetchArticles({
-      limit: 10,
-      offset: 0,
-      feed: tagFeed
-    }).then(dataArticles => (articles = dataArticles));
-  };
+  const onFeedSelected = feed =>
+    ConduitPagesHomeService.onFeedSelected({ feed, state: getState() });
 
-  let onFeedSelected = onselectedFeed => {
-    selectedFeed = onselectedFeed.id;
-    ConduitPagesHomeService.fetchArticles({
-      limit: 10,
-      offset: 0,
-      feed: onselectedFeed
-    }).then(dataArticles => (articles = dataArticles));
-  };
-
-  let onFavoritedArticle = article => {
+  const onFavoritedArticle = article => {
     console.log(article);
   };
 
-  ConduitPagesHomeService.fetchTags().then(dataTags => (tags = dataTags));
-  ConduitPagesHomeService.fetchArticles({
-    limit: 10,
-    offset: 0,
-    feed: { id: "all", name: "Global Feed" }
-  }).then(fetchedArticles => (articles = fetchedArticles));
+  const getState = () =>
+    JSON.parse(
+      JSON.stringify({
+        articles: articles,
+        pages: pages,
+        tags: tags,
+        feeds: feeds,
+        selectedFeed: selectedFeed,
+        selectedPage: selectedPage
+      })
+    );
+
+  const setState = input => {
+    articles = input.articles;
+    pages = input.pages;
+    tags = input.tags;
+    feeds = input.feeds;
+    selectedFeed = input.selectedFeed;
+    selectedPage = input.selectedPage;
+  };
+
+  ConduitPagesHomeService.init().then(state => setState(state));
 </script>
 
 <div class="home-page">
