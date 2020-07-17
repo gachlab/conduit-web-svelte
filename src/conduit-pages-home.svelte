@@ -9,20 +9,22 @@
   let state = undefined;
 
   let onTagSelected = tag =>
-    ConduitPagesHomeService.onTagSelected({ tag, state: getState() });
+    ConduitPagesHomeService.onTagSelected({
+      tag,
+      state: Object.assign({}, state)
+    });
 
   let onFeedSelected = feed =>
-    ConduitPagesHomeService.onFeedSelected({ feed, state: getState() });
+    ConduitPagesHomeService.onFeedSelected({
+      feed,
+      state: Object.assign({}, state)
+    });
 
   let onFavoritedArticle = article => {
     console.log(article);
   };
 
-  const getState = () => JSON.parse(JSON.stringify({ state }));
-
-  const setState = input => {
-    Object.keys(input).forEach(property => (state[property] = input[property]));
-  };
+  const setState = input => (state = Object.assign({}, input));
 
   ConduitPagesHomeService.init().then(state => setState(state));
 </script>
