@@ -4,19 +4,17 @@ function init() {
       articles: articles,
       tags: tags.tags,
     }))
-    .then((state) =>
-      createState({
-        articles: state.articles.data,
-        pages: state.articles.meta.pages,
-        tags: state.tags,
-        selectedFeed: "all",
-        feeds: [
-          { id: "personal", name: "Your feed" },
-          { id: "all", name: "Global Feed" },
-        ],
-        selectedPage: 1,
-      })
-    );
+    .then((state) => ({
+      articles: state.articles.data,
+      pages: state.articles.meta.pages,
+      tags: state.tags,
+      selectedFeed: "all",
+      feeds: [
+        { id: "personal", name: "Your feed" },
+        { id: "all", name: "Global Feed" },
+      ],
+      selectedPage: 1,
+    }));
 }
 
 function onTagSelected(input) {
@@ -49,16 +47,14 @@ function selectFeed(input) {
     limit: 10,
     page: 1,
     feed: input.feed,
-  }).then((articles) =>
-    createState({
-      articles: articles.data,
-      pages: articles.meta.pages,
-      tags: input.state.tags,
-      feeds: input.state.feeds,
-      selectedFeed: input.feed.id,
-      selectedPage: 1,
-    })
-  );
+  }).then((articles) => ({
+    articles: articles.data,
+    pages: articles.meta.pages,
+    tags: input.state.tags,
+    feeds: input.state.feeds,
+    selectedFeed: input.feed.id,
+    selectedPage: 1,
+  }));
 }
 
 function changePage(input) {
@@ -68,16 +64,14 @@ function changePage(input) {
     feed: input.state.feeds.find(
       (feed) => feed.id === input.state.selectedFeed
     ),
-  }).then((response) =>
-    createState({
-      articles: response.data,
-      pages: response.meta.pages,
-      selectedPage: input.page,
-      tags: input.state.tags,
-      feeds: input.state.feeds,
-      selectedFeed: input.state.selectedFeed,
-    })
-  );
+  }).then((response) => ({
+    articles: response.data,
+    pages: response.meta.pages,
+    selectedPage: input.page,
+    tags: input.state.tags,
+    feeds: input.state.feeds,
+    selectedFeed: input.state.selectedFeed,
+  }));
 }
 
 function fetchArticles(filter) {
@@ -128,17 +122,6 @@ function addProfilePageLink(article) {
   return Object.assign({}, article, {
     authorHref: window.location.href + "profile/" + article.author.username,
   });
-}
-
-function createState(input) {
-  return {
-    articles: input.articles,
-    pages: input.pages,
-    tags: input.tags,
-    feeds: input.feeds,
-    selectedFeed: input.selectedFeed,
-    selectedPage: input.selectedPage,
-  };
 }
 
 export default {

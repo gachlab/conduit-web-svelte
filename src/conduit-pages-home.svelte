@@ -6,42 +6,22 @@
   import ConduitArticlesMeta from "./conduit-articles-meta.svelte";
   import ConduitButtonsFavorite from "./conduit-buttons-favorite.svelte";
 
-  let tags = undefined;
-  let articles = undefined;
-  let feeds = undefined;
-  let selectedFeed = undefined;
-  let pages = undefined;
-  let selectedPage = undefined;
+  let state = undefined;
 
-  const onTagSelected = tag =>
+  let onTagSelected = tag =>
     ConduitPagesHomeService.onTagSelected({ tag, state: getState() });
 
-  const onFeedSelected = feed =>
+  let onFeedSelected = feed =>
     ConduitPagesHomeService.onFeedSelected({ feed, state: getState() });
 
-  const onFavoritedArticle = article => {
+  let onFavoritedArticle = article => {
     console.log(article);
   };
 
-  const getState = () =>
-    JSON.parse(
-      JSON.stringify({
-        articles: articles,
-        pages: pages,
-        tags: tags,
-        feeds: feeds,
-        selectedFeed: selectedFeed,
-        selectedPage: selectedPage
-      })
-    );
+  const getState = () => JSON.parse(JSON.stringify({ state }));
 
   const setState = input => {
-    articles = input.articles;
-    pages = input.pages;
-    tags = input.tags;
-    feeds = input.feeds;
-    selectedFeed = input.selectedFeed;
-    selectedPage = input.selectedPage;
+    Object.keys(input).forEach(property => (state[property] = input[property]));
   };
 
   ConduitPagesHomeService.init().then(state => setState(state));
@@ -57,12 +37,14 @@
   <div class="container page">
     <div class="row">
       <div class="col-md-9">
-        <ConduitArticlesFeeds
-          bind:feeds
-          bind:onSelect={onFeedSelected}
-          bind:selected={selectedFeed} />
-        {#if articles}
-          {#each articles as article}
+        {#if state.feeds}
+          <ConduitArticlesFeeds
+            bind:feeds={state.feeds}
+            bind:onSelect={onFeedSelected}
+            bind:selected={state.selectedFeed} />
+        {/if}
+        {#if state.articles}
+          {#each state.articles as article}
             <ConduitArticlesPreview bind:article>
               <ConduitArticlesMeta bind:article>
                 <ConduitButtonsFavorite
@@ -74,8 +56,10 @@
         {/if}
       </div>
       <div class="col-md-3">
-        {#if tags}
-          <ConduitTagsPopular bind:tags bind:onSelect={onTagSelected} />
+        {#if state.tags}
+          <ConduitTagsPopular
+            bind:tags={state.tags}
+            bind:onSelect={onTagSelected} />
         {/if}
       </div>
     </div>
