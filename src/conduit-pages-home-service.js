@@ -1,5 +1,5 @@
-function init() {
-  return Promise.all([fetchArticles(), fetchTags()])
+const init = () =>
+  Promise.all([fetchArticles(), fetchTags()])
     .then(([articles, tags]) => ({
       articles: articles,
       tags: tags.tags,
@@ -15,66 +15,60 @@ function init() {
       ],
       selectedPage: 1,
     }));
-}
 
-function onTagSelected(input) {
-  return selectFeed({
+const onTagSelected = (input) =>
+  selectFeed({
     feed: {
       id: input.tag.toLowerCase(),
       name: "#" + input.tag,
     },
     state: input.state,
   });
-}
 
-function onFeedSelected(input) {
-  return selectFeed({
+const onFeedSelected = (input) =>
+  selectFeed({
     feed: input.feed,
     state: input.state,
   });
-}
 
-function onPageSelected(input) {
-  return changePage({ page: input.page, state: input.state });
-}
+const onPageSelected = (input) =>
+  changePage({ page: input.page, state: input.state });
 
-function selectFeed(input) {
-  !input.state.feeds.find((f) => f.id === input.feed.id)
-    ? (input.state.feeds[2] = input.feed)
-    : undefined;
+const selectFeed = (input) =>
+  Promise.resolve(
+    !input.state.feeds.find((f) => f.id === input.feed.id)
+      ? (input.state.feeds[2] = input.feed)
+      : undefined
+  ).then(() =>
+    fetchArticles({
+      limit: 10,
+      page: 1,
+      feed: input.feed,
+    }).then((articles) =>
+      Object.assign(input.state, {
+        articles: articles.data,
+        pages: articles.meta.pages,
+        selectedPage: 1,
+      })
+    )
+  );
 
-  return fetchArticles({
-    limit: 10,
-    page: 1,
-    feed: input.feed,
-  }).then((articles) => ({
-    articles: articles.data,
-    pages: articles.meta.pages,
-    tags: input.state.tags,
-    feeds: input.state.feeds,
-    selectedFeed: input.feed.id,
-    selectedPage: 1,
-  }));
-}
-
-function changePage(input) {
-  return fetchArticles({
+const changePage = (input) =>
+  fetchArticles({
     limit: 10,
     page: input.page,
     feed: input.state.feeds.find(
       (feed) => feed.id === input.state.selectedFeed
     ),
-  }).then((response) => ({
-    articles: response.data,
-    pages: response.meta.pages,
-    selectedPage: input.page,
-    tags: input.state.tags,
-    feeds: input.state.feeds,
-    selectedFeed: input.state.selectedFeed,
-  }));
-}
+  }).then((response) =>
+    Object.assign(input.state, {
+      articles: response.data,
+      pages: response.meta.pages,
+      selectedPage: input.page,
+    })
+  );
 
-function fetchArticles(filter) {
+const fetchArticles = (filter) => {
   filter
     ? filter
     : (filter = {
@@ -104,25 +98,22 @@ function fetchArticles(filter) {
         ),
       },
     }));
-}
+};
 
-function fetchTags() {
-  return fetch("https://conduit.productionready.io/api/tags").then((response) =>
+const fetchTags = () =>
+  fetch("https://conduit.productionready.io/api/tags").then((response) =>
     response.json()
   );
-}
 
-function addArticleDetailLink(article) {
-  return Object.assign({}, article, {
+const addArticleDetailLink = (article) =>
+  Object.assign({}, article, {
     href: window.location.href + "article/" + article.slug,
   });
-}
 
-function addProfilePageLink(article) {
-  return Object.assign({}, article, {
+const addProfilePageLink = (article) =>
+  Object.assign({}, article, {
     authorHref: window.location.href + "profile/" + article.author.username,
   });
-}
 
 export default {
   init,

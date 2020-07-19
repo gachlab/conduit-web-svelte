@@ -1,10 +1,8 @@
 <script>
   import ConduitPagesHomeService from "./conduit-pages-home-service.js";
-  import ConduitTagsPopular from "./conduit-tags-popular.svelte";
+  import ConduitTagsList from "./conduit-tags-list.svelte";
   import ConduitArticlesFeeds from "./conduit-articles-feeds.svelte";
-  import ConduitArticlesPreview from "./conduit-articles-preview.svelte";
-  import ConduitArticlesMeta from "./conduit-articles-meta.svelte";
-  import ConduitButtonsFavorite from "./conduit-buttons-favorite.svelte";
+  import ConduitArticlesList from "./conduit-articles-list.svelte";
 
   let state = undefined;
 
@@ -19,10 +17,6 @@
       feed,
       state: Object.assign({}, state)
     });
-
-  let onFavoritedArticle = article => {
-    console.log(article);
-  };
 
   const setState = input => (state = Object.assign({}, input));
 
@@ -39,30 +33,19 @@
   <div class="container page">
     <div class="row">
       <div class="col-md-9">
-        {#if state.feeds}
-          <ConduitArticlesFeeds
-            bind:feeds={state.feeds}
-            bind:onSelect={onFeedSelected}
-            bind:selected={state.selectedFeed} />
-        {/if}
-        {#if state.articles}
-          {#each state.articles as article}
-            <ConduitArticlesPreview bind:article>
-              <ConduitArticlesMeta bind:article>
-                <ConduitButtonsFavorite
-                  bind:article
-                  bind:onFavorite={onFavoritedArticle} />
-              </ConduitArticlesMeta>
-            </ConduitArticlesPreview>
-          {/each}
-        {/if}
+        <ConduitArticlesFeeds
+          bind:feeds={state.feeds}
+          bind:onSelect={onFeedSelected}
+          bind:selected={state.selectedFeed} />
+        <ConduitArticlesList bind:articles={state.articles} />
       </div>
       <div class="col-md-3">
-        {#if state.tags}
-          <ConduitTagsPopular
+        <div class="sidebar">
+          <p>Popular Tags</p>
+          <ConduitTagsList
             bind:tags={state.tags}
             bind:onSelect={onTagSelected} />
-        {/if}
+        </div>
       </div>
     </div>
   </div>
