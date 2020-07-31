@@ -4,7 +4,7 @@
   import ConduitArticlesFeeds from "./conduit-articles-feeds.svelte";
   import ConduitArticlesList from "./conduit-articles-list.svelte";
 
-  let state = undefined;
+  let state = {};
 
   let onTagSelected = tag =>
     ConduitPagesHomeService.onTagSelected({

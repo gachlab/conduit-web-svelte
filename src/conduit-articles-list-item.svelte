@@ -11,9 +11,13 @@
 {#if article}
   <ConduitArticlesPreview bind:article>
     <ConduitArticlesMeta bind:article>
-      <ConduitButtonsFavorite
-        bind:article
-        bind:onFavorite={onFavoritedArticle} />
+      <div class="pull-xs-right">
+        <ConduitButtonsFavorite
+          bind:article
+          bind:onFavorite={onFavoritedArticle}>
+          <span class="counter">{article.favoritesCount}</span>
+        </ConduitButtonsFavorite>
+      </div>
     </ConduitArticlesMeta>
   </ConduitArticlesPreview>
 {/if}
