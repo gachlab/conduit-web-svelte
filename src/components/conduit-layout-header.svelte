@@ -9,7 +9,15 @@
     <ul class="nav navbar-nav pull-xs-right">
       {#each links as link (link.href)}
         <li class="nav-item">
-          <a class="nav-link" href={link.href}>{link.text}</a>
+          <a
+            class={'nav-link' + (link.active ? ' active' : '')}
+            href={link.href}>
+            {#if link.icon}
+              <i class="{link.icon}" />
+            {/if}
+
+            {link.text}
+          </a>
         </li>
       {/each}
 

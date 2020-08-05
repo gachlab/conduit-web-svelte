@@ -1,10 +1,15 @@
+import ConduitAppService from "./conduit-app-service.js";
+
 const init = (articleId) =>
-  Promise.all([fetchArticle(articleId), fetchComments(articleId)]).then(
-    ([article, comments]) => ({
-      article: article.article,
-      comments: comments.comments,
-    })
-  );
+  Promise.all([
+    ConduitAppService.getUser(),
+    fetchArticle(articleId),
+    fetchComments(articleId),
+  ]).then(([user, article, comments]) => ({
+    article: article.article,
+    comments: comments.comments,
+    author: user,
+  }));
 
 const fetchArticle = (articleId) =>
   fetch(

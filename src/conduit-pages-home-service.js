@@ -1,7 +1,7 @@
 import ConduitAppService from "./conduit-app-service.js";
 
 const init = () =>
-  ConduitAppService.isLoggedIn().then((isLoggedIn) => ({
+  ConduitAppService.getUser().then((user) => ({
     banner: {
       title: "Conduit",
       subtitle: "A place to share your knowledge.",
@@ -10,7 +10,7 @@ const init = () =>
     tags: { data: [], isOutlined: false },
     feeds: {
       data: [].concat(
-        isLoggedIn
+        user
           ? [
               {
                 id: "personal",
@@ -22,6 +22,7 @@ const init = () =>
           : [{ id: "all", name: "Global Feed", isSelected: true }]
       ),
     },
+    user,
   }));
 
 const start = (state) =>

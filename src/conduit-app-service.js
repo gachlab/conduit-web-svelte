@@ -2,31 +2,59 @@ import ConduitPagesHome from "./conduit-pages-home.svelte";
 import ConduitPagesArticlesDetails from "./conduit-pages-articles-details.svelte";
 
 const init = () =>
-  isLoggedIn().then((isLoggedIn) => ({
+  getUser().then((user) => ({
     header: {
       home: {
         title: "conduit",
         href: "#",
       },
-      links: [
-        {
-          text: "Home",
-          href: "#",
-        },
-      ].concat(
-        isLoggedIn
-          ? []
-          : [
-              {
-                text: "Sign in",
-                href: "#/signin",
-              },
-              {
-                text: "Sign up",
-                href: "#/signup",
-              },
-            ]
-      ),
+      links: user
+        ? [
+            {
+              text: "Home",
+              href: "#",
+              active: true,
+              icon: undefined,
+            },
+            {
+              text: "New Article",
+              href: "#/signin",
+              active: false,
+              icon: "ion-compose",
+            },
+            {
+              text: "Settings",
+              href: "#/signup",
+              active: false,
+              icon: "ion-gear-a",
+            },
+            {
+              text: `${user.username}`,
+              href: `#/profile/${user.username}`,
+              active: false,
+              icon: undefined,
+            },
+          ]
+        : [
+            {
+              text: "Home",
+              href: "#",
+              active: false,
+              icon: undefined,
+            },
+            {
+              text: "Sign in",
+              href: "#/signin",
+              active: false,
+              icon: undefined,
+            },
+            {
+              text: "Sign up",
+              href: "#/signup",
+              active: false,
+              icon: undefined,
+            },
+          ],
     },
     routes: {
       "/": ConduitPagesHome,
@@ -37,10 +65,18 @@ const init = () =>
 
 const start = (state) => Promise.resolve(Object.assign(state));
 
-const isLoggedIn = () => Promise.resolve(false);
+const getUser = () =>
+  Promise.resolve(
+    {
+      username: "gcarrillo",
+      bio: null,
+      image: "https://static.productionready.io/images/smiley-cyrus.jpg",
+      following: false,
+    } && false
+  );
 
 export default {
   init,
   start,
-  isLoggedIn,
+  getUser,
 };
