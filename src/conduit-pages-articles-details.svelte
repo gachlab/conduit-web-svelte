@@ -1,14 +1,14 @@
 <script>
   import service from "./conduit-pages-articles-details-service";
-  import ConduitArticlesMeta from "./conduit-articles-meta.svelte";
-  import ConduitButtonsFavorite from "./conduit-buttons-favorite.svelte";
-  import ConduitButtonsFollow from "./conduit-buttons-follow.svelte";
-  import ConduitArticlesCommentsList from "./conduit-articles-comments-list.svelte";
-  import ConduitArticlesCommentsCreate from "./conduit-articles-comments-create.svelte";
-  import ConduitTagsList from "./conduit-tags-list.svelte";
+  import ConduitArticlesMeta from "./components/conduit-articles-meta.svelte";
+  import ConduitButtonsFavorite from "./components/conduit-buttons-favorite.svelte";
+  import ConduitButtonsFollow from "./components/conduit-buttons-follow.svelte";
+  import ConduitArticlesCommentsList from "./components/conduit-articles-comments-list.svelte";
+  import ConduitArticlesCommentsCreate from "./components/conduit-articles-comments-create.svelte";
+  import ConduitTagsList from "./components/conduit-tags-list.svelte";
 
   export let params = {};
-  let state = undefined;
+  let state;
   let isOutlined = true;
   const setState = input => (state = Object.assign({}, input));
 

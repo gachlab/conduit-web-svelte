@@ -1,6 +1,6 @@
-import App from "./App.svelte";
+import Conduit from "./conduit-app.svelte";
 
-const app = new App({
+const app = new Conduit({
   target: document.body,
 });
 

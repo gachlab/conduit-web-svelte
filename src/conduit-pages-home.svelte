@@ -1,9 +1,9 @@
 <script>
   import ConduitPagesHomeService from "./conduit-pages-home-service.js";
-  import ConduitTagsList from "./conduit-tags-list.svelte";
-  import ConduitArticlesFeeds from "./conduit-articles-feeds.svelte";
-  import ConduitArticlesList from "./conduit-articles-list.svelte";
-  import ConduitLayoutPagination from "./conduit-layout-pagination.svelte";
+  import ConduitTagsList from "./components/conduit-tags-list.svelte";
+  import ConduitArticlesFeeds from "./components/conduit-articles-feeds.svelte";
+  import ConduitArticlesList from "./components/conduit-articles-list.svelte";
+  import ConduitLayoutPagination from "./components/conduit-layout-pagination.svelte";
 
   let state = undefined;
 

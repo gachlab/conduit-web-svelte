@@ -1,5 +1,7 @@
+import ConduitAppService from "./conduit-app-service.js";
+
 const init = () =>
-  isLoggedIn().then((isLoggedIn) => ({
+  ConduitAppService.isLoggedIn().then((isLoggedIn) => ({
     banner: {
       title: "Conduit",
       subtitle: "A place to share your knowledge.",
@@ -138,8 +140,6 @@ const addProfilePageLink = (article) =>
   Object.assign({}, article, {
     authorHref: window.location.href + "profile/" + article.author.username,
   });
-
-const isLoggedIn = () => Promise.resolve(false);
 
 export default {
   init,
