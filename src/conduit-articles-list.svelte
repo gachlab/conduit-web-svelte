@@ -12,7 +12,9 @@
 {/if}
 
 {#if articles && articles.length > 0}
-  {#each articles as article}
+  {#each articles as article (article.slug)}
     <ConduitArticlesListItem bind:article />
   {/each}
 {/if}
+
+<slot />

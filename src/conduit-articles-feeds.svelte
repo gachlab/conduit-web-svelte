@@ -1,6 +1,5 @@
 <script>
   export let feeds;
-  export let selected;
   export let onSelect;
 </script>
 
@@ -10,7 +9,7 @@
       {#each feeds as feed}
         <li class="nav-item">
           <a
-            class={feed.id === selected ? 'nav-link active' : 'nav-link'}
+            class={feed.isSelected ? 'nav-link active' : 'nav-link'}
             on:click={() => onSelect(feed)}>
             {feed.name}
           </a>

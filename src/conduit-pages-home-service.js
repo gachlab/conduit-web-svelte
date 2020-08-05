@@ -1,20 +1,41 @@
 const init = () =>
-  Promise.all([fetchArticles(), fetchTags()])
-    .then(([articles, tags]) => ({
-      articles: articles,
-      tags: tags.tags,
-    }))
-    .then((state) => ({
-      articles: state.articles.data,
-      pages: state.articles.meta.pages,
-      tags: state.tags,
-      selectedFeed: "all",
-      feeds: [
-        { id: "personal", name: "Your feed" },
-        { id: "all", name: "Global Feed" },
-      ],
-      selectedPage: 1,
-    }));
+  isLoggedIn().then((isLoggedIn) => ({
+    banner: {
+      title: "Conduit",
+      subtitle: "A place to share your knowledge.",
+    },
+    articles: { data: [], pages: [] },
+    tags: { data: [], isOutlined: false },
+    feeds: {
+      data: [].concat(
+        isLoggedIn
+          ? [
+              {
+                id: "personal",
+                name: "Your feed",
+                isSelected: true,
+              },
+              { id: "all", name: "Global Feed", isSelected: false },
+            ]
+          : [{ id: "all", name: "Global Feed", isSelected: true }]
+      ),
+    },
+  }));
+
+const start = (state) =>
+  Promise.all([
+    fetchArticles({
+      limit: 10,
+      page: 1,
+      feed: state.feeds.data.find((feed) => feed.isSelected),
+    }),
+    fetchTags(),
+  ]).then(([articles, tags]) =>
+    Object.assign(state, {
+      articles: { data: articles.data, pages: articles.meta.pages },
+      tags: { data: tags, isOutlined: false },
+    })
+  );
 
 const onTagSelected = (input) =>
   selectFeed({
@@ -36,8 +57,8 @@ const onPageSelected = (input) =>
 
 const selectFeed = (input) =>
   Promise.resolve(
-    !input.state.feeds.find((f) => f.id === input.feed.id)
-      ? (input.state.feeds[2] = input.feed)
+    !input.state.feeds.data.find((f) => f.id === input.feed.id)
+      ? input.state.feeds.data.push(input.feed)
       : undefined
   ).then(() =>
     fetchArticles({
@@ -46,9 +67,12 @@ const selectFeed = (input) =>
       feed: input.feed,
     }).then((articles) =>
       Object.assign(input.state, {
-        articles: articles.data,
-        pages: articles.meta.pages,
-        selectedPage: 1,
+        articles: { data: articles.data, pages: articles.meta.pages },
+        feeds: {
+          data: input.state.feeds.data.map((feed) =>
+            Object.assign(feed, { isSelected: feed.id === input.feed.id })
+          ),
+        },
       })
     )
   );
@@ -57,14 +81,10 @@ const changePage = (input) =>
   fetchArticles({
     limit: 10,
     page: input.page,
-    feed: input.state.feeds.find(
-      (feed) => feed.id === input.state.selectedFeed
-    ),
+    feed: input.state.feeds.data.find((feed) => feed.isSelected),
   }).then((response) =>
     Object.assign(input.state, {
-      articles: response.data,
-      pages: response.meta.pages,
-      selectedPage: input.page,
+      articles: { data: response.data, pages: response.meta.pages },
     })
   );
 
@@ -94,16 +114,20 @@ const fetchArticles = (filter) => {
       meta: {
         pages: Array.from(
           new Array(Math.ceil(response.articlesCount / filter.limit)),
-          (val, index) => index + 1
+          (val, index) => ({
+            text: index + 1,
+            value: index + 1,
+            isSelected: index + 1 == filter.page,
+          })
         ),
       },
     }));
 };
 
 const fetchTags = () =>
-  fetch("https://conduit.productionready.io/api/tags").then((response) =>
-    response.json()
-  );
+  fetch("https://conduit.productionready.io/api/tags")
+    .then((response) => response.json())
+    .then((tags) => tags.tags);
 
 const addArticleDetailLink = (article) =>
   Object.assign({}, article, {
@@ -115,8 +139,11 @@ const addProfilePageLink = (article) =>
     authorHref: window.location.href + "profile/" + article.author.username,
   });
 
+const isLoggedIn = () => Promise.resolve(false);
+
 export default {
   init,
+  start,
   onFeedSelected,
   onTagSelected,
   onPageSelected,

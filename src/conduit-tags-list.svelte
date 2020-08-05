@@ -1,21 +1,19 @@
 <script>
   export let tags;
-  export let outline;
+  export let isOutlined;
   export let onSelect;
 </script>
 
 {#if !tags}
   <div>Loading tags...</div>
 {/if}
-{#if tags && tags.length === 0}
-  <div>No tags are here... yet.</div>
-{/if}
+
 {#if tags && tags.length > 0}
   <div class={`tag-list`}>
-    {#each tags as tag}
+    {#each tags as tag (tag)}
       <a
-        href=""
-        class={`tag-default tag-pill ${outline ? 'tag-outline' : ''}`}
+        href="javascript:void(0)"
+        class={`tag-default tag-pill ${isOutlined ? 'tag-outline' : ''}`}
         on:click={() => onSelect(tag)}>
         {tag}
       </a>
