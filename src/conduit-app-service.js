@@ -1,5 +1,10 @@
 import ConduitPagesHome from "./conduit-pages-home.svelte";
+import ConduitPagesArticlesArticlesCreate from "./conduit-pages-articles-create.svelte";
 import ConduitPagesArticlesDetails from "./conduit-pages-articles-details.svelte";
+import ConduitPagesLogin from "./conduit-pages-login.svelte";
+import ConduitPagesSignup from "./conduit-pages-signup.svelte";
+import ConduitPagesSettings from "./conduit-pages-settings.svelte";
+import ConduitPagesProfileDetails from "./conduit-pages-profile-details.svelte";
 
 const init = () =>
   getUser().then((user) => ({
@@ -13,18 +18,18 @@ const init = () =>
             {
               text: "Home",
               href: "#",
-              active: true,
+              active: false,
               icon: undefined,
             },
             {
-              text: "New Article",
-              href: "#/signin",
+              text: "New Post",
+              href: "#/articles/create",
               active: false,
               icon: "ion-compose",
             },
             {
               text: "Settings",
-              href: "#/signup",
+              href: "#/settings",
               active: false,
               icon: "ion-gear-a",
             },
@@ -44,7 +49,7 @@ const init = () =>
             },
             {
               text: "Sign in",
-              href: "#/signin",
+              href: "#/login",
               active: false,
               icon: undefined,
             },
@@ -58,7 +63,12 @@ const init = () =>
     },
     routes: {
       "/": ConduitPagesHome,
+      "/articles/create": ConduitPagesArticlesArticlesCreate,
       "/articles/:slug": ConduitPagesArticlesDetails,
+      "/login": ConduitPagesLogin,
+      "/signup": ConduitPagesSignup,
+      "/settings": ConduitPagesSettings,
+      "/profile/:username": ConduitPagesProfileDetails,
       "*": ConduitPagesHome,
     },
   }));
