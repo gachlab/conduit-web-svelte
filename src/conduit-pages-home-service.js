@@ -3,7 +3,7 @@ import ConduitAppService from "./conduit-app-service.js";
 const init = () =>
   ConduitAppService.getUser().then((user) => ({
     banner: {
-      title: "Conduit",
+      title: "conduit",
       subtitle: "A place to share your knowledge.",
     },
     articles: { data: [], pages: [] },

@@ -55,7 +55,7 @@ const init = () =>
             },
             {
               text: "Sign up",
-              href: "#/signup",
+              href: "#/register",
               active: false,
               icon: undefined,
             },
@@ -66,7 +66,7 @@ const init = () =>
       "/articles/create": ConduitPagesArticlesArticlesCreate,
       "/articles/:slug": ConduitPagesArticlesDetails,
       "/login": ConduitPagesLogin,
-      "/signup": ConduitPagesSignup,
+      "/register": ConduitPagesSignup,
       "/settings": ConduitPagesSettings,
       "/profile/:username": ConduitPagesProfileDetails,
       "*": ConduitPagesHome,
