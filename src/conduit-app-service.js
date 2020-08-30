@@ -6,74 +6,79 @@ import ConduitPagesSignup from "./conduit-pages-signup.svelte";
 import ConduitPagesSettings from "./conduit-pages-settings.svelte";
 import ConduitPagesProfileDetails from "./conduit-pages-profile-details.svelte";
 
-const init = () =>
-  getUser().then((user) => ({
-    header: {
-      home: {
-        title: "conduit",
+const state = {
+  header: {
+    home: {
+      title: "conduit",
+      href: "#",
+    },
+    links: [
+      {
+        text: "Home",
         href: "#",
+        active: false,
+        icon: undefined,
       },
-      links: user
-        ? [
-            {
-              text: "Home",
-              href: "#",
-              active: false,
-              icon: undefined,
-            },
-            {
-              text: "New Post",
-              href: "#/articles/create",
-              active: false,
-              icon: "ion-compose",
-            },
-            {
-              text: "Settings",
-              href: "#/settings",
-              active: false,
-              icon: "ion-gear-a",
-            },
-            {
-              text: `${user.username}`,
-              href: `#/profile/${user.username}`,
-              active: false,
-              icon: undefined,
-            },
-          ]
-        : [
-            {
-              text: "Home",
-              href: "#",
-              active: false,
-              icon: undefined,
-            },
-            {
-              text: "Sign in",
-              href: "#/login",
-              active: false,
-              icon: undefined,
-            },
-            {
-              text: "Sign up",
-              href: "#/register",
-              active: false,
-              icon: undefined,
-            },
-          ],
-    },
-    routes: {
-      "/": ConduitPagesHome,
-      "/articles/create": ConduitPagesArticlesArticlesCreate,
-      "/articles/:slug": ConduitPagesArticlesDetails,
-      "/login": ConduitPagesLogin,
-      "/register": ConduitPagesSignup,
-      "/settings": ConduitPagesSettings,
-      "/profile/:username": ConduitPagesProfileDetails,
-      "*": ConduitPagesHome,
-    },
-  }));
+      {
+        text: "Sign in",
+        href: "#/login",
+        active: false,
+        icon: undefined,
+      },
+      {
+        text: "Sign up",
+        href: "#/register",
+        active: false,
+        icon: undefined,
+      },
+    ],
+  },
 
-const start = (state) => Promise.resolve(Object.assign(state));
+  routes: {
+    "/": ConduitPagesHome,
+    "/articles/create": ConduitPagesArticlesArticlesCreate,
+    "/articles/:slug": ConduitPagesArticlesDetails,
+    "/login": ConduitPagesLogin,
+    "/register": ConduitPagesSignup,
+    "/settings": ConduitPagesSettings,
+    "/profile/:username": ConduitPagesProfileDetails,
+    "*": ConduitPagesHome,
+  },
+};
+
+const init = () => Promise.resolve(state);
+
+const start = (user) => {
+  if (user) {
+    state.header.links = [
+      {
+        text: "Home",
+        href: "#",
+        active: false,
+        icon: undefined,
+      },
+      {
+        text: "New Post",
+        href: "#/articles/create",
+        active: false,
+        icon: "ion-compose",
+      },
+      {
+        text: "Settings",
+        href: "#/settings",
+        active: false,
+        icon: "ion-gear-a",
+      },
+      {
+        text: `${user.username}`,
+        href: `#/profile/${user.username}`,
+        active: false,
+        icon: undefined,
+      },
+    ];
+  }
+  console.log(state);
+};
 
 const getUser = () =>
   Promise.resolve(

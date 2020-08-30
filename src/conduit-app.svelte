@@ -7,18 +7,19 @@
 
   let state;
 
-  const setState = input => (state = Object.assign({}, input));
+  const setState = (input) => (state = input);
 
   ConduitAppService.init()
     .then(setState)
-    .then(() => ConduitAppService.start(Object.assign({}, state)))
-    .then(setState);
+    .then(() => ConduitAppService.start());
 </script>
 
 {#if state}
   <main>
 
-    <ConduitLayoutHeader bind:links={state.header.links} bind:home={state.header.home} />
+    <ConduitLayoutHeader
+      bind:links={state.header.links}
+      bind:home={state.header.home} />
     <Router bind:routes={state.routes} />
     <ConduitLayoutFooter />
   </main>
