@@ -1,0 +1,29 @@
+version: "3.8"
+services:
+  # tuestacionamiento-api:
+  #   image: gach87/tuestacionamiento-api:latest
+  #   build:
+  #     context: ./api
+  #   volumes:
+  #     - ./api:/home/node/app
+  #     - ./node_modules:/home/node/app/node_modules
+  #   environment:
+  #     - API_PORT
+  #     - API_HOST
+  #   ports:
+  #     - ${API_PORT}:${API_PORT}
+  #   labels:
+  #     - "traefik.http.routers.tuestacionamiento-api.rule=Host(`api.localhost`)"
+
+  conduit-web-svelte:
+    image: gachlab/conduit-web:svelte
+    build:
+      context: ./
+    volumes:
+      - ./:/home/node/app
+      - ./node_modules:/home/node/app/node_modules
+    ports:
+      - 5000:5000
+      - 35729:35729
+    labels:
+      - "traefik.http.routers.conduit-web-svelte.rule=Host(`localhost`)"
